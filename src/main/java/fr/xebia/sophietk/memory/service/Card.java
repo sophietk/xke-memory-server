@@ -6,9 +6,20 @@ public class Card {
 	private String color = "white";
 	private boolean found = false;
 
+	public Card() {
+	}
+
 	public Card(String symbol, String color) {
 		this.symbol = symbol;
 		this.color = color;
+	}
+
+	public String getSymbol() {
+		return symbol;
+	}
+
+	public String getColor() {
+		return color;
 	}
 
 	public boolean isFound() {

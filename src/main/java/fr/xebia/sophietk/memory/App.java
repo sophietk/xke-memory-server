@@ -1,6 +1,8 @@
 package fr.xebia.sophietk.memory;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.sun.jersey.api.core.DefaultResourceConfig;
+import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.simple.container.SimpleServerFactory;
 import fr.xebia.sophietk.memory.resource.MemoryResource;
 
@@ -23,7 +25,7 @@ public class App {
 	}
 
 	protected static Closeable startServer(int port) throws IOException {
-		DefaultResourceConfig resourceConfig = new DefaultResourceConfig(MemoryResource.class);
+		ResourceConfig resourceConfig = new DefaultResourceConfig(MemoryResource.class, JacksonJsonProvider.class);
 		return SimpleServerFactory.create("http://0.0.0.0:" + port, resourceConfig);
 	}
 
