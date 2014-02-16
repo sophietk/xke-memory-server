@@ -13,6 +13,11 @@
             <artifactId>jersey-simple-server</artifactId>
             <version>1.18</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>r09</version>
+        </dependency>
 
         <!-- test -->
         <dependency>
