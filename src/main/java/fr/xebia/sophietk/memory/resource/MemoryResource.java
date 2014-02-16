@@ -1,5 +1,7 @@
 package fr.xebia.sophietk.memory.resource;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import fr.xebia.sophietk.memory.service.CardPosition;
 import fr.xebia.sophietk.memory.service.Game;
 import fr.xebia.sophietk.memory.service.ScoreService;
@@ -16,13 +18,16 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/play")
+@Singleton
 public class MemoryResource {
 
-	private final static ScoreService scoreService = new ScoreService();
+	private ScoreService scoreService;
 	private Game game;
 	private int gameId;
 
-	public MemoryResource() {
+	@Inject
+	public MemoryResource(ScoreService scoreService) {
+		this.scoreService = scoreService;
 		game = new Game();
 		gameId = 1;
 	}

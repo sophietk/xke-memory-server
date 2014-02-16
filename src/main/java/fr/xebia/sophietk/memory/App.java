@@ -1,10 +1,17 @@
 package fr.xebia.sophietk.memory;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import com.sun.jersey.api.core.DefaultResourceConfig;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Scopes;
+import com.google.inject.Singleton;
+import com.google.inject.servlet.ServletModule;
+import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
+import com.sun.jersey.core.spi.component.ioc.IoCComponentProviderFactory;
+import com.sun.jersey.guice.spi.container.GuiceComponentProviderFactory;
 import com.sun.jersey.simple.container.SimpleServerFactory;
-import fr.xebia.sophietk.memory.resource.MemoryResource;
+import fr.xebia.sophietk.memory.service.ScoreService;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -25,8 +32,19 @@ public class App {
 	}
 
 	protected static Closeable startServer(int port) throws IOException {
-		ResourceConfig resourceConfig = new DefaultResourceConfig(MemoryResource.class, JacksonJsonProvider.class);
-		return SimpleServerFactory.create("http://0.0.0.0:" + port, resourceConfig);
+		Injector injector = Guice.createInjector(new ServletModule() {
+			@Override
+			protected void configureServlets() {
+				bind(ScoreService.class).in(Singleton.class);
+				bind(JacksonJsonProvider.class).in(Scopes.SINGLETON);
+				//serve("/*").with(GuiceContainer.class);
+			}
+		});
+		ResourceConfig rc = new PackagesResourceConfig("fr.xebia.sophietk.memory.resource");
+		IoCComponentProviderFactory ioc = new GuiceComponentProviderFactory(rc, injector);
+
+		//ResourceConfig resourceConfig = new DefaultResourceConfig(MemoryResource.class, JacksonJsonProvider.class);
+		return SimpleServerFactory.create("http://0.0.0.0:" + port, rc, ioc);
 	}
 
 }

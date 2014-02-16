@@ -1,8 +1,11 @@
 package fr.xebia.sophietk.memory.service;
 
+import com.google.inject.Singleton;
+
 import java.util.HashMap;
 import java.util.Map;
 
+@Singleton
 public class ScoreService {
 
 	private Map<String, Integer> scores = new HashMap<String, Integer>();

@@ -50,5 +50,14 @@ public class AppTest {
 		assertTrue(0 == response.getProgress());
 		assertTrue(0 == response.getGameScore());
 		assertTrue(0 == response.getTurn().getTurnScore());
+
+		Card card1 = response.getTurn().getCards().get(0);
+
+		MemoryResponse response2 = client.resource(TEST_APP_ROOT)
+				.path("play")
+				.type(MediaType.APPLICATION_JSON)
+				.post(MemoryResponse.class, "[{\"x\": 0, \"y\": 1}, {\"x\": 0, \"y\": 1}]");
+
+		assertEquals(card1, response2.getTurn().getCards().get(0));
 	}
 }
