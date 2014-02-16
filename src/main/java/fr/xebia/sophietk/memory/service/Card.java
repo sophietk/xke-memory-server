@@ -1,4 +1,4 @@
-package fr.xebia.sophietk.memory;
+package fr.xebia.sophietk.memory.service;
 
 public class Card {
 

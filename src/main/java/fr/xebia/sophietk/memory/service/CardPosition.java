@@ -1,13 +1,10 @@
-package fr.xebia.sophietk.memory;
-
-import com.google.common.annotations.VisibleForTesting;
+package fr.xebia.sophietk.memory.service;
 
 public class CardPosition {
 
 	private int x;
 	private int y;
 
-	@VisibleForTesting
 	protected CardPosition(int x, int y) {
 		this.x = x;
 		this.y = y;

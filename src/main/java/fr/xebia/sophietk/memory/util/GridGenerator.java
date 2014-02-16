@@ -1,7 +1,8 @@
-package fr.xebia.sophietk.memory;
+package fr.xebia.sophietk.memory.util;
 
 
 import com.sun.tools.javac.util.Assert;
+import fr.xebia.sophietk.memory.service.Card;
 
 import java.util.ArrayList;
 import java.util.Arrays;

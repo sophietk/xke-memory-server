@@ -2,6 +2,7 @@ package fr.xebia.sophietk.memory;
 
 import com.sun.jersey.api.core.DefaultResourceConfig;
 import com.sun.jersey.simple.container.SimpleServerFactory;
+import fr.xebia.sophietk.memory.resource.MemoryResource;
 
 import java.io.Closeable;
 import java.io.IOException;

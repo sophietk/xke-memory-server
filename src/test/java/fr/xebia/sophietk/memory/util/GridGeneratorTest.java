@@ -1,5 +1,6 @@
-package fr.xebia.sophietk.memory;
+package fr.xebia.sophietk.memory.util;
 
+import fr.xebia.sophietk.memory.service.Card;
 import org.junit.Test;
 
 import java.util.Arrays;

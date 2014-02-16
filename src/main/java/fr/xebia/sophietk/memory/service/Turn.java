@@ -1,8 +1,8 @@
-package fr.xebia.sophietk.memory;
+package fr.xebia.sophietk.memory.service;
 
 import java.util.List;
 
-public class TurnResult {
+public class Turn {
 
 	private int turnScore = 0;
 	private List<Card> cards;
