@@ -30,15 +30,20 @@ public class Game {
 
 		List<Card> cards = new ArrayList<Card>();
 		for (CardPosition position : positions) {
-			Card card = grid[position.getX()][position.getY()];
-			if (card.isFound()) {
-				turn.incrementScore(-3);
+			try {
+				Card card = grid[position.getX()][position.getY()];
+				if (card.isFound()) {
+					turn.incrementScore(-3);
+				}
+				cards.add(card);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				turn.incrementScore(-1);
+				turn.setMessage(String.format("You cannot play outside the %dx%d grid", GridGenerator.GRID_SIZE, GridGenerator.GRID_SIZE));
 			}
-			cards.add(card);
 		}
 		turn.setCards(cards);
 
-		if (!positions.get(0).equals(positions.get(1)) && !cards.get(0).isFound() && !cards.get(1).isFound() && cards.get(0).equals(cards.get(1))) {
+		if (turn.getCards().size() == 2 && !positions.get(0).equals(positions.get(1)) && !cards.get(0).isFound() && !cards.get(1).isFound() && cards.get(0).equals(cards.get(1))) {
 			turn.incrementScore(10);
 			cards.get(0).switchFound();
 			cards.get(1).switchFound();

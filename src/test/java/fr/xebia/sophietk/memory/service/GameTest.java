@@ -103,6 +103,36 @@ public class GameTest {
 	}
 
 	@Test
+	public void should_lose_1_point_when_outside_the_grid() {
+		Game game = new Game();
+
+		assertTrue(game.getProgress() == 0);
+
+		List<CardPosition> positions = new ArrayList<CardPosition>();
+		positions.add(new CardPosition(30, 0));
+		positions.add(new CardPosition(0, 5));
+		Turn turn = game.play(positions);
+
+		assertTrue(-1 == turn.getTurnScore());
+		assertEquals("You cannot play outside the 6x6 grid", turn.getMessage());
+	}
+
+	@Test
+	public void should_lose_1_point_when_negative_coordinates() {
+		Game game = new Game();
+
+		assertTrue(game.getProgress() == 0);
+
+		List<CardPosition> positions = new ArrayList<CardPosition>();
+		positions.add(new CardPosition(-5, 0));
+		positions.add(new CardPosition(0, -5));
+		Turn turn = game.play(positions);
+
+		assertTrue(-1 * 2 == turn.getTurnScore());
+		assertEquals("You cannot play outside the 6x6 grid", turn.getMessage());
+	}
+
+	@Test
 	public void should_return_updated_game_progress() {
 		Game game = new Game();
 
