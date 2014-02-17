@@ -1,50 +1,47 @@
 package fr.xebia.sophietk.memory;
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Scopes;
-import com.google.inject.Singleton;
-import com.google.inject.servlet.ServletModule;
-import com.sun.jersey.api.core.PackagesResourceConfig;
-import com.sun.jersey.api.core.ResourceConfig;
-import com.sun.jersey.core.spi.component.ioc.IoCComponentProviderFactory;
-import com.sun.jersey.guice.spi.container.GuiceComponentProviderFactory;
-import com.sun.jersey.simple.container.SimpleServerFactory;
-import fr.xebia.sophietk.memory.service.ScoreService;
-
-import java.io.Closeable;
-import java.io.IOException;
+import com.google.inject.servlet.GuiceFilter;
+import com.sun.jersey.guice.JerseyServletModule;
+import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
+import fr.xebia.sophietk.memory.resource.MemoryResource;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.webapp.WebAppContext;
 
 public class App {
 
 	public static final int PORT = 3000;
 
 	public static void main(String[] args) throws Exception {
-		Closeable server = startServer(PORT);
+		Server server = startServer(PORT);
 
 		try {
 			System.out.println("Press any key to stop the service...");
 			System.in.read();
 		} finally {
-			server.close();
+			server.stop();
 		}
 	}
 
-	protected static Closeable startServer(int port) throws IOException {
-		Injector injector = Guice.createInjector(new ServletModule() {
+	protected static Server startServer(int port) throws Exception {
+		Server server = new Server(port);
+		WebAppContext appContext = new WebAppContext();
+		FilterHolder guiceFilter = new FilterHolder(Guice.createInjector(new JerseyServletModule() {
 			@Override
 			protected void configureServlets() {
-				bind(ScoreService.class).in(Singleton.class);
-				bind(JacksonJsonProvider.class).in(Scopes.SINGLETON);
-				//serve("/*").with(GuiceContainer.class);
-			}
-		});
-		ResourceConfig rc = new PackagesResourceConfig("fr.xebia.sophietk.memory.resource");
-		IoCComponentProviderFactory ioc = new GuiceComponentProviderFactory(rc, injector);
+				bind(MemoryResource.class);
 
-		//ResourceConfig resourceConfig = new DefaultResourceConfig(MemoryResource.class, JacksonJsonProvider.class);
-		return SimpleServerFactory.create("http://0.0.0.0:" + port, rc, ioc);
+				serve("/*").with(GuiceContainer.class);
+			}
+		}).getInstance(GuiceFilter.class));
+		//appContext.addEventListener(new GuiceConfiguration());
+		appContext.addFilter(guiceFilter, "/*", 0);
+		appContext.setResourceBase("nothing");
+		server.setHandler(appContext);
+		server.start();
+
+		return server;
 	}
 
 }

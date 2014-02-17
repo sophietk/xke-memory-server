@@ -7,11 +7,13 @@ import fr.xebia.sophietk.memory.service.Game;
 import fr.xebia.sophietk.memory.service.ScoreService;
 import fr.xebia.sophietk.memory.service.Turn;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -34,8 +36,8 @@ public class MemoryResource {
 
 	@GET
 	@Path("ping")
-	public String ping() {
-		return "pong";
+	public String ping(@Context HttpServletRequest request) {
+		return "pong " + request.getRemoteAddr();
 	}
 
 	@POST

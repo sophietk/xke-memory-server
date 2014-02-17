@@ -3,12 +3,11 @@ package fr.xebia.sophietk.memory;
 import com.sun.jersey.api.client.Client;
 import fr.xebia.sophietk.memory.resource.MemoryResponse;
 import fr.xebia.sophietk.memory.service.Card;
+import org.eclipse.jetty.server.Server;
 import org.junit.After;
 import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
-import java.io.Closeable;
-import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,13 +16,14 @@ public class AppTest {
 
 	private static final int TEST_PORT = 3001;
 	private static final String TEST_APP_ROOT = "http://0.0.0.0:" + TEST_PORT;
+	public static final String IP_PATTERN = "\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b";
 
 	private Client client = Client.create();
-	private Closeable server;
+	private Server server;
 
 	@After
-	public void tearDown() throws IOException {
-		if (server != null) server.close();
+	public void tearDown() throws Exception {
+		if (server != null) server.stop();
 	}
 
 	@Test
@@ -34,7 +34,7 @@ public class AppTest {
 				.path("play/ping")
 				.get(String.class);
 
-		assertEquals("pong", response);
+		assertTrue(response.matches("pong " + IP_PATTERN));
 	}
 
 	@Test
