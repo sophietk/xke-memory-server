@@ -5,9 +5,12 @@ import com.google.inject.servlet.GuiceFilter;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import fr.xebia.sophietk.memory.resource.MemoryResource;
+import org.eclipse.jetty.server.DispatcherType;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+
+import java.util.EnumSet;
 
 public class App {
 
@@ -25,20 +28,18 @@ public class App {
 	}
 
 	protected static Server startServer(int port) throws Exception {
-		Server server = new Server(port);
-		WebAppContext appContext = new WebAppContext();
-		FilterHolder guiceFilter = new FilterHolder(Guice.createInjector(new JerseyServletModule() {
+		Guice.createInjector(new JerseyServletModule() {
 			@Override
 			protected void configureServlets() {
 				bind(MemoryResource.class);
-
 				serve("/*").with(GuiceContainer.class);
 			}
-		}).getInstance(GuiceFilter.class));
-		//appContext.addEventListener(new GuiceConfiguration());
-		appContext.addFilter(guiceFilter, "/*", 0);
-		appContext.setResourceBase("nothing");
-		server.setHandler(appContext);
+		});
+
+		Server server = new Server(port);
+		ServletContextHandler handler = new ServletContextHandler(server, "/", ServletContextHandler.SESSIONS);
+		handler.addFilter(GuiceFilter.class, "/*", EnumSet.allOf(DispatcherType.class));
+		handler.addServlet(DefaultServlet.class, "/");
 		server.start();
 
 		return server;

@@ -12,7 +12,7 @@
         <jersey.version>1.8</jersey.version>
         <jackson.version>2.3.0</jackson.version>
         <guice.version>3.0</guice.version>
-        <jetty.version>7.6.0.v20120127</jetty.version><!--8.1.9.v20130131-->
+        <jetty.version>7.6.0.v20120127</jetty.version>
     </properties>
 
     <dependencies>
