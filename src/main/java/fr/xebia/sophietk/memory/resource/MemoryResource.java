@@ -6,6 +6,7 @@ import fr.xebia.sophietk.memory.service.CardPosition;
 import fr.xebia.sophietk.memory.service.Game;
 import fr.xebia.sophietk.memory.service.ScoreService;
 import fr.xebia.sophietk.memory.service.Turn;
+import org.eclipse.jetty.server.Response;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -13,6 +14,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -41,11 +43,14 @@ public class MemoryResource {
 	}
 
 	@POST
-	public MemoryResponse play(List<CardPosition> positions, @Context HttpServletRequest request) {
+	public MemoryResponse play(List<CardPosition> positions, @Context HttpServletRequest request) throws Exception {
+		if (game.getProgress() == 100) {
+			throw new WebApplicationException(Response.SC_BAD_REQUEST);
+		}
+
 		Turn turn = game.play(positions);
 		String player = request.getRemoteAddr();
-
-		int gameScore = scoreService.addTurnScoreAndReturnGameScore(player, gameId, turn.getTurnScore());
+		int gameScore = scoreService.addTurnScore(player, gameId, turn.getTurnScore());
 
 		return new MemoryResponse(gameId, game.getProgress(), turn, gameScore);
 	}

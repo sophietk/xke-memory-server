@@ -10,7 +10,7 @@ public class ScoreService {
 
 	private Map<String, Integer> scores = new HashMap<String, Integer>();
 
-	public int addTurnScoreAndReturnGameScore(String player, int gameId, int turnScore) {
+	public int addTurnScore(String player, int gameId, int turnScore) {
 		String key = player + " " + gameId;
 		int newGameScore = scores.containsKey(key) ? scores.get(key) + turnScore : turnScore;
 		scores.put(key, newGameScore);

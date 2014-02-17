@@ -11,7 +11,7 @@ import java.util.List;
 
 public class GridGenerator {
 
-	public static final int GRID_SIZE = 6;
+	public static final int GRID_SIZE = 2;
 
 	private static final List<String> CARDS_SYMBOLS = Arrays.asList("balloon", "dog", "coat", "boat", "umbrella");
 	private static final List<String> CARDS_COLORS = Arrays.asList("red", "blue", "yellow", "green");
