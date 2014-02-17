@@ -41,11 +41,11 @@ public class MemoryResource {
 	}
 
 	@POST
-	public MemoryResponse play(List<CardPosition> positions) {
+	public MemoryResponse play(List<CardPosition> positions, @Context HttpServletRequest request) {
 		Turn turn = game.play(positions);
-		String ip = "";
+		String player = request.getRemoteAddr();
 
-		int gameScore = scoreService.addTurnScoreAndReturnGameScore(ip, gameId, turn.getTurnScore());
+		int gameScore = scoreService.addTurnScoreAndReturnGameScore(player, gameId, turn.getTurnScore());
 
 		return new MemoryResponse(gameId, game.getProgress(), turn, gameScore);
 	}

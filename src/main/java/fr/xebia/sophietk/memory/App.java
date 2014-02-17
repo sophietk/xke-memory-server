@@ -5,6 +5,7 @@ import com.google.inject.servlet.GuiceFilter;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import fr.xebia.sophietk.memory.resource.MemoryResource;
+import fr.xebia.sophietk.memory.resource.ScoreResource;
 import org.eclipse.jetty.server.DispatcherType;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.DefaultServlet;
@@ -32,6 +33,7 @@ public class App {
 			@Override
 			protected void configureServlets() {
 				bind(MemoryResource.class);
+				bind(ScoreResource.class);
 				serve("/*").with(GuiceContainer.class);
 			}
 		});

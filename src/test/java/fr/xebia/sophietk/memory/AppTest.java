@@ -8,6 +8,8 @@ import org.junit.After;
 import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -59,5 +61,43 @@ public class AppTest {
 				.post(MemoryResponse.class, "[{\"x\": 0, \"y\": 1}, {\"x\": 0, \"y\": 1}]");
 
 		assertEquals(card1, response2.getTurn().getCards().get(0));
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void should_get_updated_scores() throws Exception {
+		server = App.startServer(TEST_PORT);
+
+		final String gameScoreUri = "scores/game/1";
+
+		Map<String, Integer> response = client.resource(TEST_APP_ROOT)
+				.path(gameScoreUri)
+				.get(HashMap.class);
+
+		assertEquals(0, response.size());
+
+		client.resource(TEST_APP_ROOT)
+				.path("play")
+				.type(MediaType.APPLICATION_JSON)
+				.post(MemoryResponse.class, "[{\"x\": -1, \"y\": 1}, {\"x\": 0, \"y\": 1}]");
+
+		Map<String, Integer> response2 = client.resource(TEST_APP_ROOT)
+				.path(gameScoreUri)
+				.get(HashMap.class);
+
+		assertEquals(1, response2.size());
+		assertTrue(response2.containsValue(-1)); // score -1
+
+		client.resource(TEST_APP_ROOT)
+				.path("play")
+				.type(MediaType.APPLICATION_JSON)
+				.post(MemoryResponse.class, "[{\"x\": 2, \"y\": 1}]");
+
+		Map<String, Integer> response3 = client.resource(TEST_APP_ROOT)
+				.path(gameScoreUri)
+				.get(HashMap.class);
+
+		assertEquals(1, response3.size());
+		assertTrue(response3.containsValue(-2)); // score -2
 	}
 }
