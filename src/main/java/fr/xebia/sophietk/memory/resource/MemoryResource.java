@@ -2,7 +2,6 @@ package fr.xebia.sophietk.memory.resource;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import fr.xebia.sophietk.memory.service.CardPosition;
 import fr.xebia.sophietk.memory.service.Game;
 import fr.xebia.sophietk.memory.service.ScoreService;
 import fr.xebia.sophietk.memory.service.Turn;
@@ -43,7 +42,7 @@ public class MemoryResource {
 	}
 
 	@POST
-	public MemoryResponse play(List<CardPosition> positions, @Context HttpServletRequest request) throws Exception {
+	public MemoryResponse play(List<Integer> positions, @Context HttpServletRequest request) throws Exception {
 		if (game.getProgress() == 100) {
 			throw new WebApplicationException(Response.SC_BAD_REQUEST);
 		}

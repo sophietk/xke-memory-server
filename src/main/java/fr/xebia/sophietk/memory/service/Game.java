@@ -7,19 +7,27 @@ import java.util.List;
 
 public class Game {
 
-	private Card[][] grid;
-	private int discoveredCards;
+	public static final int DEFAULT_NB_CARDS_COUPLE = 20;
+
+	private List<Card> grid;
+	private int nbCards;
+	private int nbDiscoveredCards;
 
 	public Game() {
-		grid = GridGenerator.generate();
-		discoveredCards = 0;
+		this(DEFAULT_NB_CARDS_COUPLE);
 	}
 
-	protected Card[][] getGrid() {
+	public Game(int cardsCouple) {
+		grid = GridGenerator.generate(cardsCouple);
+		nbCards = cardsCouple * 2;
+		nbDiscoveredCards = 0;
+	}
+
+	protected List<Card> getGrid() {
 		return grid;
 	}
 
-	public Turn play(List<CardPosition> positions) {
+	public Turn play(List<Integer> positions) {
 		Turn turn = new Turn();
 
 		if (positions.size() != 2) {
@@ -29,31 +37,35 @@ public class Game {
 		}
 
 		List<Card> cards = new ArrayList<Card>();
-		for (CardPosition position : positions) {
+		for (int position : positions) {
 			try {
-				Card card = grid[position.getX()][position.getY()];
+				Card card = grid.get(position);
 				if (card.isFound()) {
 					turn.incrementScore(-3);
 				}
 				cards.add(card);
-			} catch (ArrayIndexOutOfBoundsException e) {
+			} catch (IndexOutOfBoundsException e) {
 				turn.incrementScore(-1);
-				turn.setMessage(String.format("You cannot play outside the %dx%d grid", GridGenerator.GRID_SIZE, GridGenerator.GRID_SIZE));
+				turn.setMessage(String.format("You cannot play outside the grid (%d cards)", nbCards));
 			}
 		}
 		turn.setCards(cards);
 
-		if (turn.getCards().size() == 2 && !positions.get(0).equals(positions.get(1)) && !cards.get(0).isFound() && !cards.get(1).isFound() && cards.get(0).equals(cards.get(1))) {
+		if (turn.getCards().size() == 2
+				&& !positions.get(0).equals(positions.get(1))
+				&& !cards.get(0).isFound()
+				&& !cards.get(1).isFound()
+				&& cards.get(0).sameAs(cards.get(1))) {
 			turn.incrementScore(10);
 			cards.get(0).switchFound();
 			cards.get(1).switchFound();
-			discoveredCards += 2;
+			nbDiscoveredCards += 2;
 		}
 
 		return turn;
 	}
 
 	public double getProgress() {
-		return 100 * discoveredCards / (GridGenerator.GRID_SIZE * GridGenerator.GRID_SIZE);
+		return 100 * nbDiscoveredCards / nbCards;
 	}
 }

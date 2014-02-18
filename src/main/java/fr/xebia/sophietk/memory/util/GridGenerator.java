@@ -1,7 +1,7 @@
 package fr.xebia.sophietk.memory.util;
 
 
-import com.sun.tools.javac.util.Assert;
+import com.google.common.collect.Lists;
 import fr.xebia.sophietk.memory.service.Card;
 
 import java.util.ArrayList;
@@ -11,34 +11,31 @@ import java.util.List;
 
 public class GridGenerator {
 
-	public static final int GRID_SIZE = 2;
-
 	private static final List<String> CARDS_SYMBOLS = Arrays.asList("balloon", "dog", "coat", "boat", "umbrella");
 	private static final List<String> CARDS_COLORS = Arrays.asList("red", "blue", "yellow", "green");
 
-	public static Card[][] generate() {
-		Assert.check(GRID_SIZE * GRID_SIZE % 2 == 0);
-
-		List<Card> randomCards = new ArrayList<Card>();
-		Collections.shuffle(CARDS_SYMBOLS);
-		Collections.shuffle(CARDS_COLORS);
-		outerloop:
+	private static List<Card> newAllCards() {
+		List<Card> allPossibleCards = new ArrayList<Card>();
 		for (String symbol : CARDS_SYMBOLS) {
 			for (String color : CARDS_COLORS) {
-				randomCards.add(new Card(symbol, color));
-				if (randomCards.size() == GRID_SIZE * GRID_SIZE / 2) break outerloop;
+				allPossibleCards.add(new Card(symbol, color));
 			}
 		}
-		randomCards.addAll(randomCards); // Duplicate cards
-		Collections.shuffle(randomCards);
+		return allPossibleCards;
+	}
 
-		Card[][] grid = new Card[GRID_SIZE][GRID_SIZE];
-		for (int i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
-			int x = i % GRID_SIZE;
-			int y = i / GRID_SIZE;
-			grid[x][y] = randomCards.get(i);
-		}
+	public static List<Card> generate(int cardsCouple) {
+		List<Card> cards = newAllCards();
+		Collections.shuffle(cards);
+		cards = cards.subList(0, cardsCouple);
 
-		return grid;
+		// Duplicate cards (references AND objects)
+		List<Card> cards2 = Lists.newArrayList();
+		for (Card card : cards) cards2.add(card.clone());
+		cards.addAll(cards2);
+
+		Collections.shuffle(cards);
+
+		return cards;
 	}
 }

@@ -1,6 +1,8 @@
 package fr.xebia.sophietk.memory.service;
 
-public class Card {
+import com.google.common.base.Objects;
+
+public class Card implements Cloneable {
 
 	private String symbol = "nothing";
 	private String color = "white";
@@ -30,16 +32,17 @@ public class Card {
 		this.found = true;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof Card)) return false;
-
-		Card other = (Card) o;
-		return this.symbol.equals(other.symbol) && this.color.equals(other.color);
+	public boolean sameAs(Card otherCard) {
+		return Objects.equal(this.symbol, otherCard.symbol) && Objects.equal(this.color, otherCard.color);
 	}
 
 	@Override
 	public String toString() {
 		return color + " " + symbol;
+	}
+
+	@Override
+	public Card clone() {
+		return new Card(this.symbol, this.color);
 	}
 }
