@@ -1,6 +1,7 @@
 package fr.xebia.sophietk.memory.resource;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
 import fr.xebia.sophietk.memory.App;
 import org.eclipse.jetty.server.Server;
 import org.junit.After;
@@ -33,13 +34,13 @@ public class ScoreResourceTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void should_get_updated_scores() throws Exception {
 		final String gameScoreUri = "scores/game/1";
 
 		Map<String, Integer> response = client.resource(TEST_APP_ROOT)
 				.path(gameScoreUri)
-				.get(HashMap.class);
+				.get(new GenericType<HashMap<String, Integer>>() {
+				});
 
 		assertEquals(0, response.size());
 
@@ -50,7 +51,8 @@ public class ScoreResourceTest {
 
 		Map<String, Integer> response2 = client.resource(TEST_APP_ROOT)
 				.path(gameScoreUri)
-				.get(HashMap.class);
+				.get(new GenericType<HashMap<String, Integer>>() {
+				});
 
 		assertEquals(1, response2.size());
 		assertTrue(response2.containsValue(-1)); // score -1
@@ -62,7 +64,8 @@ public class ScoreResourceTest {
 
 		Map<String, Integer> response3 = client.resource(TEST_APP_ROOT)
 				.path(gameScoreUri)
-				.get(HashMap.class);
+				.get(new GenericType<HashMap<String, Integer>>() {
+				});
 
 		assertEquals(1, response3.size());
 		assertTrue(response3.containsValue(-2)); // score -2
