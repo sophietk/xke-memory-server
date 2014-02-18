@@ -7,11 +7,19 @@ import java.util.List;
 
 public class Game {
 
+	public static final int DEFAULT_GRID_SIZE = 6;
+
 	private Card[][] grid;
+	private int gridSize;
 	private int discoveredCards;
 
 	public Game() {
-		grid = GridGenerator.generate();
+		this(DEFAULT_GRID_SIZE);
+	}
+
+	public Game(int gridSize) {
+		grid = GridGenerator.generate(gridSize);
+		this.gridSize = gridSize;
 		discoveredCards = 0;
 	}
 
@@ -38,7 +46,7 @@ public class Game {
 				cards.add(card);
 			} catch (ArrayIndexOutOfBoundsException e) {
 				turn.incrementScore(-1);
-				turn.setMessage(String.format("You cannot play outside the %dx%d grid", GridGenerator.GRID_SIZE, GridGenerator.GRID_SIZE));
+				turn.setMessage(String.format("You cannot play outside the %dx%d grid", gridSize, gridSize));
 			}
 		}
 		turn.setCards(cards);
@@ -54,6 +62,10 @@ public class Game {
 	}
 
 	public double getProgress() {
-		return 100 * discoveredCards / (GridGenerator.GRID_SIZE * GridGenerator.GRID_SIZE);
+		return 100 * discoveredCards / (gridSize * gridSize);
+	}
+
+	public int getGridSize() {
+		return gridSize;
 	}
 }

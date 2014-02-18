@@ -1,6 +1,5 @@
 package fr.xebia.sophietk.memory.service;
 
-import fr.xebia.sophietk.memory.util.GridGenerator;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -148,14 +147,32 @@ public class GameTest {
 		assertTrue(secondTurnGameProgress > firstTurnGameProgress);
 	}
 
+	@Test
+	public void should_play_in_game_with_appropriate_size() {
+		Game game = new Game();
+		assertEquals(Game.DEFAULT_GRID_SIZE, game.getGridSize());
+
+		List<CardPosition> positions = new ArrayList<CardPosition>();
+		positions.add(new CardPosition(0, 0));
+		positions.add(new CardPosition(Game.DEFAULT_GRID_SIZE - 1, Game.DEFAULT_GRID_SIZE - 1));
+		Turn turn = game.play(positions);
+		assertTrue(turn.getTurnScore() >= 0); // not outside the grid
+
+		Game game2 = new Game(4);
+		assertEquals(4, game2.getGridSize());
+
+		Turn turn2 = game2.play(positions);
+		assertTrue(turn2.getTurnScore() < 0); // outside the grid
+	}
+
 	private List<CardPosition> findSomeUndiscoveredCardsCouple(Game game) {
 		Card[][] grid = game.getGrid();
 		Card firstCard = null;
 		CardPosition firstCardPosition = null;
 		CardPosition secondCardPosition = null;
 		outerloop:
-		for (int i = 0; i < GridGenerator.GRID_SIZE; i++) {
-			for (int j = 0; j < GridGenerator.GRID_SIZE; j++) {
+		for (int i = 0; i < game.getGridSize(); i++) {
+			for (int j = 0; j < game.getGridSize(); j++) {
 				if (firstCardPosition == null && !grid[i][j].isFound()) {
 					firstCard = grid[i][j];
 					firstCardPosition = new CardPosition(i, j);
@@ -177,8 +194,8 @@ public class GameTest {
 		Card[][] grid = game.getGrid();
 		CardPosition notFoundCardPosition = null;
 		outerloop:
-		for (int i = 0; i < GridGenerator.GRID_SIZE; i++) {
-			for (int j = 0; j < GridGenerator.GRID_SIZE; j++) {
+		for (int i = 0; i < game.getGridSize(); i++) {
+			for (int j = 0; j < game.getGridSize(); j++) {
 				if (!grid[i][j].isFound()) {
 					notFoundCardPosition = new CardPosition(i, j);
 					break outerloop;
