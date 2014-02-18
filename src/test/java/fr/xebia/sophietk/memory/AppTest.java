@@ -46,7 +46,7 @@ public class AppTest {
 		MemoryResponse response = client.resource(TEST_APP_ROOT)
 				.path("play")
 				.type(MediaType.APPLICATION_JSON)
-				.post(MemoryResponse.class, "[{\"x\": 0, \"y\": 1}, {\"x\": 0, \"y\": 1}]");
+				.post(MemoryResponse.class, "[ [0, 1], [0, 1] ]");
 
 		assertTrue(1 == response.getGameId());
 		assertTrue(0 == response.getProgress());
@@ -58,7 +58,7 @@ public class AppTest {
 		MemoryResponse response2 = client.resource(TEST_APP_ROOT)
 				.path("play")
 				.type(MediaType.APPLICATION_JSON)
-				.post(MemoryResponse.class, "[{\"x\": 0, \"y\": 1}, {\"x\": 0, \"y\": 1}]");
+				.post(MemoryResponse.class, "[ [0, 1], [0, 1] ]");
 
 		assertEquals(card1, response2.getTurn().getCards().get(0));
 	}
@@ -79,7 +79,7 @@ public class AppTest {
 		client.resource(TEST_APP_ROOT)
 				.path("play")
 				.type(MediaType.APPLICATION_JSON)
-				.post(MemoryResponse.class, "[{\"x\": -1, \"y\": 1}, {\"x\": 0, \"y\": 1}]");
+				.post(MemoryResponse.class, "[ [-1, 1], [0, 1] ]");
 
 		Map<String, Integer> response2 = client.resource(TEST_APP_ROOT)
 				.path(gameScoreUri)
@@ -91,7 +91,7 @@ public class AppTest {
 		client.resource(TEST_APP_ROOT)
 				.path("play")
 				.type(MediaType.APPLICATION_JSON)
-				.post(MemoryResponse.class, "[{\"x\": 2, \"y\": 1}]");
+				.post(MemoryResponse.class, "[ [0, 1] ]");
 
 		Map<String, Integer> response3 = client.resource(TEST_APP_ROOT)
 				.path(gameScoreUri)

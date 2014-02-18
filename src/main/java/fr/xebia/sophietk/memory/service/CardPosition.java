@@ -8,7 +8,7 @@ public class CardPosition {
 	public CardPosition() {
 	}
 
-	protected CardPosition(int x, int y) {
+	public CardPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}

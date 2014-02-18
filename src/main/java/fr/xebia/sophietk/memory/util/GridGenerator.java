@@ -16,9 +16,8 @@ public class GridGenerator {
 	private static final List<String> CARDS_COLORS = Arrays.asList("red", "blue", "yellow", "green");
 
 	public static Card[][] generate(int gridSize) {
-		if (gridSize * gridSize % 2 != 0) {
+		if (gridSize * gridSize % 2 != 0)
 			throw new RuntimeException("La grille doit permettre de placer un nombre pair de cartes");
-		}
 
 		List<Card> randomCards = new ArrayList<Card>();
 		Collections.shuffle(CARDS_SYMBOLS);

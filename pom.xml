@@ -46,6 +46,11 @@
             <artifactId>guice-servlet</artifactId>
             <version>${guice.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>r09</version>
+        </dependency>
 
         <!-- test -->
         <dependency>
