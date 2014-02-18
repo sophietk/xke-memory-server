@@ -28,7 +28,7 @@ public class App {
 		}
 	}
 
-	protected static Server startServer(int port) throws Exception {
+	public static Server startServer(int port) throws Exception {
 		Guice.createInjector(new JerseyServletModule() {
 			@Override
 			protected void configureServlets() {
