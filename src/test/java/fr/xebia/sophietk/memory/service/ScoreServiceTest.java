@@ -2,6 +2,10 @@ package fr.xebia.sophietk.memory.service;
 
 import org.junit.Test;
 
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class ScoreServiceTest {
@@ -46,5 +50,35 @@ public class ScoreServiceTest {
 		scoreService.addTurnScore(AN_IP, 1, 10);
 		int currentScoreOtherGame = scoreService.addTurnScore(AN_IP, 2, -3);
 		assertTrue(currentScoreOtherGame == -3);
+	}
+
+	@Test
+	public void should_return_all_played_games_id() {
+		ScoreService scoreService = new ScoreService();
+
+		scoreService.addTurnScore(AN_IP, 1, 10);
+		scoreService.addTurnScore(AN_IP, 5, 10);
+		scoreService.addTurnScore(ANOTHER_IP, 1, 10);
+
+		Set<Integer> gamesId = scoreService.getAllGamesId();
+		assertNotNull(gamesId);
+		assertEquals(2, gamesId.size());
+		assertTrue(gamesId.contains(1));
+		assertTrue(gamesId.contains(5));
+	}
+
+	@Test
+	public void should_return_all_players() {
+		ScoreService scoreService = new ScoreService();
+
+		scoreService.addTurnScore(AN_IP, 1, 10);
+		scoreService.addTurnScore(AN_IP, 3, 10);
+		scoreService.addTurnScore(ANOTHER_IP, 5, 10);
+
+		Set<String> players = scoreService.getAllPlayers();
+		assertNotNull(players);
+		assertEquals(2, players.size());
+		assertTrue(players.contains(AN_IP));
+		assertTrue(players.contains(ANOTHER_IP));
 	}
 }

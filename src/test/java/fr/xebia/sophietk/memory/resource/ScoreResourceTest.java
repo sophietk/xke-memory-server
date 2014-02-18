@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -19,6 +20,7 @@ public class ScoreResourceTest {
 
 	private static final int TEST_PORT = 3001;
 	private static final String TEST_APP_ROOT = "http://0.0.0.0:" + TEST_PORT;
+	public static final String IP_PATTERN = "\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b";
 
 	private Client client = Client.create();
 	private Server server;
@@ -69,5 +71,55 @@ public class ScoreResourceTest {
 
 		assertEquals(1, response3.size());
 		assertTrue(response3.containsValue(-2)); // score -2
+	}
+
+	@Test
+	public void should_get_updated_games_list() throws Exception {
+		final String gamesUri = "scores/game";
+
+		List<Integer> response = client.resource(TEST_APP_ROOT)
+				.path(gamesUri)
+				.get(new GenericType<List<Integer>>() {
+				});
+
+		assertEquals(0, response.size());
+
+		client.resource(TEST_APP_ROOT)
+				.path("play")
+				.type(MediaType.APPLICATION_JSON)
+				.post(MemoryResponse.class, "[ [-1, 1], [0, 1] ]");
+
+		List<Integer> response2 = client.resource(TEST_APP_ROOT)
+				.path(gamesUri)
+				.get(new GenericType<List<Integer>>() {
+				});
+
+		assertEquals(1, response2.size());
+		assertTrue(response2.contains(1)); // game 1
+	}
+
+	@Test
+	public void should_get_updated_players_list() throws Exception {
+		final String gamesUri = "scores/player";
+
+		List<String> response = client.resource(TEST_APP_ROOT)
+				.path(gamesUri)
+				.get(new GenericType<List<String>>() {
+				});
+
+		assertEquals(0, response.size());
+
+		client.resource(TEST_APP_ROOT)
+				.path("play")
+				.type(MediaType.APPLICATION_JSON)
+				.post(MemoryResponse.class, "[ [-1, 1], [0, 1] ]");
+
+		List<String> response2 = client.resource(TEST_APP_ROOT)
+				.path(gamesUri)
+				.get(new GenericType<List<String>>() {
+				});
+
+		assertEquals(1, response2.size());
+		assertTrue(response2.get(0).matches(IP_PATTERN)); // my ip
 	}
 }

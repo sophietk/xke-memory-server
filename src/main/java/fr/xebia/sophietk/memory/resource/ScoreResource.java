@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Map;
+import java.util.Set;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -33,5 +34,17 @@ public class ScoreResource {
 	@Path("/player/{player}")
 	public Map<Integer, Integer> getPlayerScores(@PathParam("player") String player) {
 		return scoreService.getPlayerScores(player);
+	}
+
+	@GET
+	@Path("/game")
+	public Set<Integer> getAllGamesId() {
+		return scoreService.getAllGamesId();
+	}
+
+	@GET
+	@Path("/player")
+	public Set<String> getAllPlayers() {
+		return scoreService.getAllPlayers();
 	}
 }
