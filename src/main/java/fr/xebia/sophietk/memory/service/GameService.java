@@ -9,9 +9,7 @@ public class GameService {
 	private int nbGames;
 
 	public GameService() {
-		nbGames = 0;
-		game = new Game();
-		game.setGameId(++nbGames);
+		reset();
 	}
 
 	public Game getCurrentGame() {
@@ -20,6 +18,12 @@ public class GameService {
 
 	public void launchNewGame(int gridSize) {
 		game = new Game(gridSize);
+		game.setGameId(++nbGames);
+	}
+
+	public void reset() {
+		nbGames = 0;
+		game = new Game();
 		game.setGameId(++nbGames);
 	}
 }

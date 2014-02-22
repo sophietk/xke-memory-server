@@ -1,6 +1,7 @@
 package fr.xebia.sophietk.memory.resource;
 
 import com.sun.jersey.api.client.UniformInterfaceException;
+import fr.xebia.sophietk.memory.App;
 import fr.xebia.sophietk.memory.service.Game;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -74,6 +76,26 @@ public class AdminResourceTest extends ServerResourceTest {
 		assertTrue(Seconds.secondsBetween(DateTime.now(), new DateTime(log1.get("date"))).isLessThan(Seconds.seconds(1)));
 		assertTrue(((String) log1.get("player")).matches(IP_PATTERN));
 		assertTrue(((String) log1.get("action")).matches("^(Wins|Loses) .*"));
+	}
+
+	@Test
+	public void should_reset_all() {
+		play("[ [0, 1], [0, 1] ]");
+		newGameForAdmin(2);
+		play("[ [0, 1], [-1, 1] ]");
+
+		assertFalse(logsForAdmin().isEmpty());
+		assertFalse(totalScores().isEmpty());
+		assertEquals(2, currentGameForAdmin().getInt("gameId"));
+
+		client.resource(TEST_APP_ROOT)
+				.path("admin/reset")
+				.header("adminpass", App.DEFAULT_ADMIN_PASS)
+				.post();
+
+		assertTrue(logsForAdmin().isEmpty());
+		assertTrue(totalScores().isEmpty());
+		assertEquals(1, currentGameForAdmin().getInt("gameId"));
 	}
 
 }

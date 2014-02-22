@@ -14,7 +14,7 @@ public class LogService {
 	List<Map<String, Object>> logs;
 
 	public LogService() {
-		logs = Lists.newArrayList();
+		reset();
 	}
 
 	public void addLog(String player, String action) {
@@ -27,5 +27,9 @@ public class LogService {
 
 	public List<Map<String, Object>> getLogs() {
 		return logs;
+	}
+
+	public void reset() {
+		logs = Lists.newArrayList();
 	}
 }

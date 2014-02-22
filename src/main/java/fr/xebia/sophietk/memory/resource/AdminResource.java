@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import fr.xebia.sophietk.memory.service.Game;
 import fr.xebia.sophietk.memory.service.GameService;
 import fr.xebia.sophietk.memory.service.LogService;
+import fr.xebia.sophietk.memory.service.ScoreService;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -22,11 +23,13 @@ import java.util.Map;
 public class AdminResource {
 
 	private GameService gameService;
+	private ScoreService scoreService;
 	private LogService logService;
 
 	@Inject
-	public AdminResource(GameService gameService, LogService logService) {
+	public AdminResource(GameService gameService, ScoreService scoreService, LogService logService) {
 		this.gameService = gameService;
+		this.scoreService = scoreService;
 		this.logService = logService;
 	}
 
@@ -53,5 +56,13 @@ public class AdminResource {
 	@Path("/logs")
 	public List<Map<String, Object>> logs() {
 		return logService.getLogs();
+	}
+
+	@POST
+	@Path("/reset")
+	public void reset() {
+		gameService.reset();
+		logService.reset();
+		scoreService.reset();
 	}
 }

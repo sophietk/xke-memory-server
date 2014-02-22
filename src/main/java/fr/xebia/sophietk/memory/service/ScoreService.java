@@ -13,7 +13,11 @@ public class ScoreService {
 	private static final String KEY_SEPARATOR = " ";
 
 	// TODO : replace with MultiKeyMap
-	private Map<String, Integer> scores = Maps.newHashMap();
+	private Map<String, Integer> scores;
+
+	public ScoreService() {
+		reset();
+	}
 
 	public int addTurnScore(String player, int gameId, int turnScore) {
 		String key = player + KEY_SEPARATOR + gameId;
@@ -76,5 +80,9 @@ public class ScoreService {
 		}
 
 		return totalScores;
+	}
+
+	public void reset() {
+		scores = Maps.newHashMap();
 	}
 }

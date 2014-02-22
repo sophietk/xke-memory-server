@@ -27,14 +27,14 @@ import java.util.List;
 @Path("/play")
 public class MemoryResource {
 
-	private ScoreService scoreService;
 	private GameService gameService;
+	private ScoreService scoreService;
 	private LogService logService;
 
 	@Inject
-	public MemoryResource(ScoreService scoreService, GameService gameService, LogService logService) {
-		this.scoreService = scoreService;
+	public MemoryResource(GameService gameService, ScoreService scoreService, LogService logService) {
 		this.gameService = gameService;
+		this.scoreService = scoreService;
 		this.logService = logService;
 	}
 
