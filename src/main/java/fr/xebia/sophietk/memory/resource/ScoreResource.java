@@ -25,6 +25,11 @@ public class ScoreResource {
 	}
 
 	@GET
+	public Map<String, Integer> getTotalScores() {
+		return scoreService.getTotalScores();
+	}
+
+	@GET
 	@Path("/game/{gameId}")
 	public Map<String, Integer> getGameScores(@PathParam("gameId") int gameId) {
 		return scoreService.getGameScores(gameId);

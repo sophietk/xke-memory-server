@@ -66,4 +66,15 @@ public class ScoreService {
 		}
 		return allPlayers;
 	}
+
+	public Map<String, Integer> getTotalScores() {
+		Map<String, Integer> totalScores = Maps.newHashMap();
+		for (String key : scores.keySet()) {
+			String currentPlayer = key.split(KEY_SEPARATOR)[0];
+			int addedScore = totalScores.containsKey(currentPlayer) ? totalScores.get(currentPlayer) + scores.get(key) : scores.get(key);
+			totalScores.put(currentPlayer, addedScore);
+		}
+
+		return totalScores;
+	}
 }
