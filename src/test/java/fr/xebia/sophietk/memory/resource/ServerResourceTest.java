@@ -42,7 +42,7 @@ public abstract class ServerResourceTest {
 	protected void newGameForAdmin(int gridSize) {
 		client.resource(TEST_APP_ROOT)
 				.path("admin/new")
-				.header("adminpass", App.DEFAULT_ADMIN_PASS)
+				.header("adminpass", App.HEADER_ADMIN_PASS)
 				.type(MediaType.APPLICATION_JSON)
 				.post(gridSize);
 	}
@@ -50,7 +50,7 @@ public abstract class ServerResourceTest {
 	protected JSONObject currentGameForAdmin() {
 		String gameString = client.resource(TEST_APP_ROOT)
 				.path("admin/game")
-				.header("adminpass", App.DEFAULT_ADMIN_PASS)
+				.header("adminpass", App.HEADER_ADMIN_PASS)
 				.get(String.class);
 		return new JSONObject(gameString);
 	}
@@ -58,7 +58,7 @@ public abstract class ServerResourceTest {
 	protected List<Map<String, Object>> logsForAdmin() {
 		return client.resource(TEST_APP_ROOT)
 				.path("admin/logs")
-				.header("adminpass", App.DEFAULT_ADMIN_PASS)
+				.header("adminpass", App.HEADER_ADMIN_PASS)
 				.type(MediaType.APPLICATION_JSON)
 				.get(new GenericType<List<Map<String, Object>>>() {
 				});
