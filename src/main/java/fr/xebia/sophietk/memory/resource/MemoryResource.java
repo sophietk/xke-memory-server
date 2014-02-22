@@ -1,9 +1,9 @@
 package fr.xebia.sophietk.memory.resource;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import fr.xebia.sophietk.memory.service.CardPosition;
 import fr.xebia.sophietk.memory.service.Game;
+import fr.xebia.sophietk.memory.service.GameService;
 import fr.xebia.sophietk.memory.service.ScoreService;
 import fr.xebia.sophietk.memory.service.Turn;
 import fr.xebia.sophietk.memory.util.PositionConverter;
@@ -23,18 +23,15 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/play")
-@Singleton
 public class MemoryResource {
 
 	private ScoreService scoreService;
-	private Game game;
-	private int gameId;
+	private GameService gameService;
 
 	@Inject
-	public MemoryResource(ScoreService scoreService) {
+	public MemoryResource(ScoreService scoreService, GameService gameService) {
 		this.scoreService = scoreService;
-		game = new Game();
-		gameId = 1;
+		this.gameService = gameService;
 	}
 
 	@GET
@@ -45,6 +42,8 @@ public class MemoryResource {
 
 	@POST
 	public MemoryResponse play(List<List<Integer>> positions, @Context HttpServletRequest request) throws Exception {
+		final Game game = gameService.getCurrentGame();
+
 		if (game.getProgress() == 100) {
 			Response response = Response.status(Response.Status.BAD_REQUEST).entity("Cannot play because game is over").build();
 			throw new WebApplicationException(response);
@@ -60,8 +59,8 @@ public class MemoryResource {
 
 		Turn turn = game.play(cardPositions);
 		String player = request.getRemoteAddr();
-		int gameScore = scoreService.addTurnScore(player, gameId, turn.getTurnScore());
+		int gameScore = scoreService.addTurnScore(player, game.getGameId(), turn.getTurnScore());
 
-		return new MemoryResponse(gameId, game.getProgress(), turn, gameScore);
+		return new MemoryResponse(game.getGameId(), game.getProgress(), turn, gameScore);
 	}
 }

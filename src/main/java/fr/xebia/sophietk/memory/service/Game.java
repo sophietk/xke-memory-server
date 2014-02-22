@@ -9,6 +9,7 @@ public class Game {
 
 	public static final int DEFAULT_GRID_SIZE = 6;
 
+	private int gameId;
 	private Card[][] grid;
 	private int gridSize;
 	private int discoveredCards;
@@ -23,8 +24,24 @@ public class Game {
 		discoveredCards = 0;
 	}
 
-	protected Card[][] getGrid() {
+	public int getGameId() {
+		return gameId;
+	}
+
+	public void setGameId(int gameId) {
+		this.gameId = gameId;
+	}
+
+	public Card[][] getGrid() {
 		return grid;
+	}
+
+	public int getGridSize() {
+		return gridSize;
+	}
+
+	public double getProgress() {
+		return 100 * discoveredCards / (gridSize * gridSize);
 	}
 
 	public Turn play(List<CardPosition> positions) {
@@ -59,13 +76,5 @@ public class Game {
 		}
 
 		return turn;
-	}
-
-	public double getProgress() {
-		return 100 * discoveredCards / (gridSize * gridSize);
-	}
-
-	public int getGridSize() {
-		return gridSize;
 	}
 }
