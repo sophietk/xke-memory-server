@@ -64,10 +64,10 @@ public class GameTest {
 	}
 
 	@Test
-	public void should_win_10_points_when_finding_a_cards_couple() {
+	public void should_win_10_points_when_finding_a_cards_pair() {
 		Game game = new Game();
 
-		List<CardPosition> positions = findSomeUndiscoveredCardsCouple(game);
+		List<CardPosition> positions = findSomeUndiscoveredCardsPair(game);
 
 		Turn result = game.play(positions);
 
@@ -84,7 +84,7 @@ public class GameTest {
 	public void should_lose_3_points_when_a_played_card_was_already_found() {
 		Game game = new Game();
 
-		List<CardPosition> firstTurnPositions = findSomeUndiscoveredCardsCouple(game);
+		List<CardPosition> firstTurnPositions = findSomeUndiscoveredCardsPair(game);
 		game.play(firstTurnPositions);
 
 		List<CardPosition> secondTurnPositions = Lists.newArrayList();
@@ -137,11 +137,11 @@ public class GameTest {
 
 		assertEquals(0, game.getProgress(), 0);
 
-		game.play(findSomeUndiscoveredCardsCouple(game));
+		game.play(findSomeUndiscoveredCardsPair(game));
 		double firstTurnGameProgress = game.getProgress();
 		assertTrue(firstTurnGameProgress > 0);
 
-		game.play(findSomeUndiscoveredCardsCouple(game));
+		game.play(findSomeUndiscoveredCardsPair(game));
 		double secondTurnGameProgress = game.getProgress();
 		assertTrue(secondTurnGameProgress > 0);
 		assertTrue(secondTurnGameProgress > firstTurnGameProgress);
@@ -165,7 +165,7 @@ public class GameTest {
 		assertTrue(turn2.getTurnScore() < 0); // outside the grid
 	}
 
-	private List<CardPosition> findSomeUndiscoveredCardsCouple(Game game) {
+	private List<CardPosition> findSomeUndiscoveredCardsPair(Game game) {
 		Card[][] grid = game.getGrid();
 		Card firstCard = null;
 		CardPosition firstCardPosition = null;

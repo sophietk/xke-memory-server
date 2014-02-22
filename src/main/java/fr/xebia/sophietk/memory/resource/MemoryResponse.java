@@ -4,8 +4,8 @@ import fr.xebia.sophietk.memory.service.Turn;
 
 public class MemoryResponse {
 
-	private int gameId = 0; // numéro de la partie
-	private double progress = 0; // avancement (0 à 100 en pourcents)
+	private int gameId = 0; // current game id
+	private double progress = 0; // from 0 to 100, in percents
 	private Turn turn;
 	private int gameScore;
 

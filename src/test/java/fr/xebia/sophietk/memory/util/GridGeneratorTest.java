@@ -23,19 +23,15 @@ public class GridGeneratorTest {
 	}
 
 	@Test
-	public void should_generate_grid_with_couple_of_cards() {
+	public void should_generate_grid_with_cards_pairs() {
 		Card[][] grid = GridGenerator.generate(TEST_GRID_SIZE);
 
 		Map<String, Integer> foundCards = Maps.newHashMap();
 		for (Card[] cardLines : grid) {
 			for (Card card : cardLines) {
 				String cardDescription = card.toString();
-				if (foundCards.containsKey(cardDescription)) {
-					int sameCardsNumber = foundCards.get(cardDescription) + 1;
-					foundCards.put(cardDescription, sameCardsNumber);
-				} else {
-					foundCards.put(cardDescription, 1);
-				}
+				int sameCardsNumber = foundCards.containsKey(cardDescription) ? foundCards.get(cardDescription) + 1 : 1;
+				foundCards.put(cardDescription, sameCardsNumber);
 			}
 		}
 
@@ -56,7 +52,12 @@ public class GridGeneratorTest {
 	}
 
 	@Test(expected = RuntimeException.class)
-	public void should_throw_error_when_grid_cannot_be_built() {
+	public void should_throw_error_when_grid_cannot_be_built_with_odd_cards_number() {
 		GridGenerator.generate(5);
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void should_throw_error_when_grid_cannot_be_built_with_too_high_cards_number() {
+		GridGenerator.generate(8);
 	}
 }
