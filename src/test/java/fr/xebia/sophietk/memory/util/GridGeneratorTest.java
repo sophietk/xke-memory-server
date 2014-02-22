@@ -1,15 +1,14 @@
 package fr.xebia.sophietk.memory.util;
 
+import com.google.common.collect.Maps;
 import fr.xebia.sophietk.memory.service.Card;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class GridGeneratorTest {
 
@@ -27,7 +26,7 @@ public class GridGeneratorTest {
 	public void should_generate_grid_with_couple_of_cards() {
 		Card[][] grid = GridGenerator.generate(TEST_GRID_SIZE);
 
-		Map<String, Integer> foundCards = new HashMap<String, Integer>();
+		Map<String, Integer> foundCards = Maps.newHashMap();
 		for (Card[] cardLines : grid) {
 			for (Card card : cardLines) {
 				String cardDescription = card.toString();
@@ -42,7 +41,7 @@ public class GridGeneratorTest {
 
 		assertEquals(TEST_GRID_SIZE * TEST_GRID_SIZE / 2, foundCards.size());
 		for (Integer numberDifferentCards : foundCards.values()) {
-			assertTrue(numberDifferentCards == 2);
+			assertEquals(2, (int) numberDifferentCards);
 		}
 	}
 

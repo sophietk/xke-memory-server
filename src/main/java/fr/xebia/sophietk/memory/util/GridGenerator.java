@@ -1,16 +1,14 @@
 package fr.xebia.sophietk.memory.util;
 
 
+import com.google.common.collect.Lists;
 import fr.xebia.sophietk.memory.service.Card;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GridGenerator {
-
-	//public static final int GRID_SIZE = 2;
 
 	private static final List<String> CARDS_SYMBOLS = Arrays.asList("balloon", "dog", "coat", "boat", "umbrella");
 	private static final List<String> CARDS_COLORS = Arrays.asList("red", "blue", "yellow", "green");
@@ -19,7 +17,7 @@ public class GridGenerator {
 		if (gridSize * gridSize % 2 != 0)
 			throw new RuntimeException("La grille doit permettre de placer un nombre pair de cartes");
 
-		List<Card> randomCards = new ArrayList<Card>();
+		List<Card> randomCards = Lists.newArrayList();
 		Collections.shuffle(CARDS_SYMBOLS);
 		Collections.shuffle(CARDS_COLORS);
 		outerloop:

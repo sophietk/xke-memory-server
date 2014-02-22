@@ -1,8 +1,8 @@
 package fr.xebia.sophietk.memory.service;
 
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -18,12 +18,12 @@ public class GameTest {
 	public void should_lose_1_point_when_playing_only_one_card() {
 		Game game = new Game();
 
-		List<CardPosition> positions = new ArrayList<CardPosition>();
+		List<CardPosition> positions = Lists.newArrayList();
 		positions.add(new CardPosition(0, 1));
 
 		Turn result = game.play(positions);
 
-		assertTrue(result.getTurnScore() == -1);
+		assertEquals(-1, result.getTurnScore());
 		assertEquals("You cannot turn less or more than 2 cards", result.getMessage());
 		assertNull(result.getCards());
 	}
@@ -32,14 +32,14 @@ public class GameTest {
 	public void should_lose_1_point_when_playing_more_than_two_cards() {
 		Game game = new Game();
 
-		List<CardPosition> positions = new ArrayList<CardPosition>();
+		List<CardPosition> positions = Lists.newArrayList();
 		positions.add(new CardPosition(0, 1));
 		positions.add(new CardPosition(0, 1));
 		positions.add(new CardPosition(0, 1));
 
 		Turn result = game.play(positions);
 
-		assertTrue(result.getTurnScore() == -1);
+		assertEquals(-1, result.getTurnScore());
 		assertEquals("You cannot turn less or more than 2 cards", result.getMessage());
 		assertNull(result.getCards());
 	}
@@ -48,13 +48,13 @@ public class GameTest {
 	public void should_win_no_point_when_playing_same_position() {
 		Game game = new Game();
 
-		List<CardPosition> positions = new ArrayList<CardPosition>();
+		List<CardPosition> positions = Lists.newArrayList();
 		positions.add(new CardPosition(0, 1));
 		positions.add(new CardPosition(0, 1));
 
 		Turn result = game.play(positions);
 
-		assertTrue(result.getTurnScore() == 0);
+		assertEquals(0, result.getTurnScore());
 		assertNull(result.getMessage());
 		assertNotNull(result.getCards());
 		assertEquals(2, result.getCards().size());
@@ -71,7 +71,7 @@ public class GameTest {
 
 		Turn result = game.play(positions);
 
-		assertTrue(result.getTurnScore() == 10);
+		assertEquals(10, result.getTurnScore());
 		assertNull(result.getMessage());
 		assertNotNull(result.getCards());
 		assertEquals(2, result.getCards().size());
@@ -87,12 +87,12 @@ public class GameTest {
 		List<CardPosition> firstTurnPositions = findSomeUndiscoveredCardsCouple(game);
 		game.play(firstTurnPositions);
 
-		List<CardPosition> secondTurnPositions = new ArrayList<CardPosition>();
+		List<CardPosition> secondTurnPositions = Lists.newArrayList();
 		secondTurnPositions.add(firstTurnPositions.get(0));
 		secondTurnPositions.add(findSomeNotFoundCard(game));
 		Turn result = game.play(secondTurnPositions);
 
-		assertTrue(result.getTurnScore() == -3);
+		assertEquals(-3, result.getTurnScore());
 		assertNull(result.getMessage());
 		assertNotNull(result.getCards());
 		assertEquals(2, result.getCards().size());
@@ -105,14 +105,14 @@ public class GameTest {
 	public void should_lose_1_point_when_outside_the_grid() {
 		Game game = new Game();
 
-		assertTrue(game.getProgress() == 0);
+		assertEquals(0, game.getProgress(), 0);
 
-		List<CardPosition> positions = new ArrayList<CardPosition>();
+		List<CardPosition> positions = Lists.newArrayList();
 		positions.add(new CardPosition(30, 0));
 		positions.add(new CardPosition(0, 5));
 		Turn turn = game.play(positions);
 
-		assertTrue(-1 == turn.getTurnScore());
+		assertEquals(-1, turn.getTurnScore());
 		assertEquals("You cannot play outside the 6x6 grid", turn.getMessage());
 	}
 
@@ -120,14 +120,14 @@ public class GameTest {
 	public void should_lose_1_point_when_negative_coordinates() {
 		Game game = new Game();
 
-		assertTrue(game.getProgress() == 0);
+		assertEquals(0, game.getProgress(), 0);
 
-		List<CardPosition> positions = new ArrayList<CardPosition>();
+		List<CardPosition> positions = Lists.newArrayList();
 		positions.add(new CardPosition(-5, 0));
 		positions.add(new CardPosition(0, -5));
 		Turn turn = game.play(positions);
 
-		assertTrue(-1 * 2 == turn.getTurnScore());
+		assertEquals(-1 * 2, turn.getTurnScore());
 		assertEquals("You cannot play outside the 6x6 grid", turn.getMessage());
 	}
 
@@ -135,7 +135,7 @@ public class GameTest {
 	public void should_return_updated_game_progress() {
 		Game game = new Game();
 
-		assertTrue(game.getProgress() == 0);
+		assertEquals(0, game.getProgress(), 0);
 
 		game.play(findSomeUndiscoveredCardsCouple(game));
 		double firstTurnGameProgress = game.getProgress();
@@ -152,7 +152,7 @@ public class GameTest {
 		Game game = new Game();
 		assertEquals(Game.DEFAULT_GRID_SIZE, game.getGridSize());
 
-		List<CardPosition> positions = new ArrayList<CardPosition>();
+		List<CardPosition> positions = Lists.newArrayList();
 		positions.add(new CardPosition(0, 0));
 		positions.add(new CardPosition(Game.DEFAULT_GRID_SIZE - 1, Game.DEFAULT_GRID_SIZE - 1));
 		Turn turn = game.play(positions);
@@ -184,7 +184,7 @@ public class GameTest {
 			}
 		}
 
-		List<CardPosition> positions = new ArrayList<CardPosition>();
+		List<CardPosition> positions = Lists.newArrayList();
 		positions.add(firstCardPosition);
 		positions.add(secondCardPosition);
 		return positions;

@@ -1,9 +1,9 @@
 package fr.xebia.sophietk.memory.service;
 
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.inject.Singleton;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,7 +13,7 @@ public class ScoreService {
 	private static final String KEY_SEPARATOR = " ";
 
 	// TODO : replace with MultiKeyMap
-	private Map<String, Integer> scores = new HashMap<String, Integer>();
+	private Map<String, Integer> scores = Maps.newHashMap();
 
 	public int addTurnScore(String player, int gameId, int turnScore) {
 		String key = player + KEY_SEPARATOR + gameId;
@@ -24,7 +24,7 @@ public class ScoreService {
 	}
 
 	public Map<String, Integer> getGameScores(int gameId) {
-		Map<String, Integer> gameScores = new HashMap<String, Integer>();
+		Map<String, Integer> gameScores = Maps.newHashMap();
 		for (String key : scores.keySet()) {
 			int currentGameId = Integer.parseInt(key.split(KEY_SEPARATOR)[1]);
 			if (currentGameId == gameId) {
@@ -37,7 +37,7 @@ public class ScoreService {
 	}
 
 	public Map<Integer, Integer> getPlayerScores(String player) {
-		Map<Integer, Integer> playerScores = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> playerScores = Maps.newHashMap();
 		for (String key : scores.keySet()) {
 			String currentPlayer = key.split(KEY_SEPARATOR)[0];
 			if (player.equals(currentPlayer)) {

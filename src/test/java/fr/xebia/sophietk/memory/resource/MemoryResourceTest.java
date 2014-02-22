@@ -49,10 +49,10 @@ public class MemoryResourceTest {
 				.type(MediaType.APPLICATION_JSON)
 				.post(MemoryResponse.class, "[ [0, 1], [0, 1] ]");
 
-		assertTrue(1 == response.getGameId());
-		assertTrue(0 == response.getProgress());
-		assertTrue(0 == response.getGameScore());
-		assertTrue(0 == response.getTurn().getTurnScore());
+		assertEquals(1, response.getGameId());
+		assertEquals(0, response.getProgress(), 0);
+		assertEquals(0, response.getGameScore());
+		assertEquals(0, response.getTurn().getTurnScore());
 
 		Card card1 = response.getTurn().getCards().get(0);
 

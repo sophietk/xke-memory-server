@@ -1,8 +1,8 @@
 package fr.xebia.sophietk.memory.service;
 
+import com.google.common.collect.Lists;
 import fr.xebia.sophietk.memory.util.GridGenerator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
@@ -36,7 +36,7 @@ public class Game {
 			return turn;
 		}
 
-		List<Card> cards = new ArrayList<Card>();
+		List<Card> cards = Lists.newArrayList();
 		for (CardPosition position : positions) {
 			try {
 				Card card = grid[position.getX()][position.getY()];

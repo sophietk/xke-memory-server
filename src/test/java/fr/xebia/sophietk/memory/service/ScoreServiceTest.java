@@ -18,10 +18,10 @@ public class ScoreServiceTest {
 		ScoreService scoreService = new ScoreService();
 
 		int currentScore = scoreService.addTurnScore(AN_IP, 1, 10);
-		assertTrue(currentScore == 10);
+		assertEquals(10, currentScore);
 
 		currentScore = scoreService.addTurnScore(AN_IP, 1, 5);
-		assertTrue(currentScore == 15);
+		assertEquals(15, currentScore);
 	}
 
 	@Test
@@ -31,7 +31,7 @@ public class ScoreServiceTest {
 		scoreService.addTurnScore(AN_IP, 1, 10);
 		scoreService.addTurnScore(AN_IP, 1, -3);
 		int currentScore = scoreService.addTurnScore(AN_IP, 1, -3);
-		assertTrue(currentScore == 4);
+		assertEquals(4, currentScore);
 	}
 
 	@Test
@@ -40,7 +40,7 @@ public class ScoreServiceTest {
 
 		scoreService.addTurnScore(AN_IP, 1, 10);
 		int currentScoreOtherPlayer = scoreService.addTurnScore(ANOTHER_IP, 1, -3);
-		assertTrue(currentScoreOtherPlayer == -3);
+		assertEquals(-3, currentScoreOtherPlayer);
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class ScoreServiceTest {
 
 		scoreService.addTurnScore(AN_IP, 1, 10);
 		int currentScoreOtherGame = scoreService.addTurnScore(AN_IP, 2, -3);
-		assertTrue(currentScoreOtherGame == -3);
+		assertEquals(-3, currentScoreOtherGame);
 	}
 
 	@Test
