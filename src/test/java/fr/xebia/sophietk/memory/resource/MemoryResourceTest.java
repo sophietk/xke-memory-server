@@ -1,6 +1,7 @@
 package fr.xebia.sophietk.memory.resource;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.UniformInterfaceException;
 import fr.xebia.sophietk.memory.App;
 import fr.xebia.sophietk.memory.service.Card;
 import org.eclipse.jetty.server.Server;
@@ -33,7 +34,7 @@ public class MemoryResourceTest {
 	}
 
 	@Test
-	public void should_return_my_ip() throws Exception {
+	public void should_return_my_ip() {
 		String response = client.resource(TEST_APP_ROOT)
 				.path("play/ping")
 				.get(String.class);
@@ -42,7 +43,7 @@ public class MemoryResourceTest {
 	}
 
 	@Test
-	public void should_play_in_same_game() throws Exception {
+	public void should_play_in_same_game() {
 		MemoryResponse response = client.resource(TEST_APP_ROOT)
 				.path("play")
 				.type(MediaType.APPLICATION_JSON)
@@ -61,5 +62,13 @@ public class MemoryResourceTest {
 				.post(MemoryResponse.class, "[ [0, 1], [0, 1] ]");
 
 		assertEquals(card1, response2.getTurn().getCards().get(0));
+	}
+
+	@Test(expected = UniformInterfaceException.class)
+	public void should_throw_http_error() {
+		client.resource(TEST_APP_ROOT)
+				.path("play")
+				.type(MediaType.APPLICATION_JSON)
+				.post(MemoryResponse.class, "[ [0, 1], [2] ]");
 	}
 }

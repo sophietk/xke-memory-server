@@ -7,7 +7,6 @@ import fr.xebia.sophietk.memory.service.Game;
 import fr.xebia.sophietk.memory.service.ScoreService;
 import fr.xebia.sophietk.memory.service.Turn;
 import fr.xebia.sophietk.memory.util.PositionConverter;
-import org.eclipse.jetty.server.Response;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -18,6 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Consumes(MediaType.APPLICATION_JSON)
@@ -46,14 +46,16 @@ public class MemoryResource {
 	@POST
 	public MemoryResponse play(List<List<Integer>> positions, @Context HttpServletRequest request) throws Exception {
 		if (game.getProgress() == 100) {
-			throw new WebApplicationException(Response.SC_BAD_REQUEST);
+			Response response = Response.status(Response.Status.BAD_REQUEST).entity("Cannot play because game is over").build();
+			throw new WebApplicationException(response);
 		}
 
 		List<CardPosition> cardPositions;
 		try {
 			cardPositions = PositionConverter.toCardPosition(positions);
 		} catch (RuntimeException e) {
-			throw new WebApplicationException(Response.SC_BAD_REQUEST);
+			Response response = Response.status(Response.Status.BAD_REQUEST).entity("Cards positions to flip are malformed").build();
+			throw new WebApplicationException(response);
 		}
 
 		Turn turn = game.play(cardPositions);

@@ -36,7 +36,7 @@ public class ScoreResourceTest {
 	}
 
 	@Test
-	public void should_get_updated_scores() throws Exception {
+	public void should_get_updated_scores() {
 		final String gameScoreUri = "scores/game/1";
 
 		Map<String, Integer> response = client.resource(TEST_APP_ROOT)
@@ -74,7 +74,7 @@ public class ScoreResourceTest {
 	}
 
 	@Test
-	public void should_get_updated_games_list() throws Exception {
+	public void should_get_updated_games_list() {
 		final String gamesUri = "scores/game";
 
 		List<Integer> response = client.resource(TEST_APP_ROOT)
@@ -99,7 +99,7 @@ public class ScoreResourceTest {
 	}
 
 	@Test
-	public void should_get_updated_players_list() throws Exception {
+	public void should_get_updated_players_list() {
 		final String gamesUri = "scores/player";
 
 		List<String> response = client.resource(TEST_APP_ROOT)
