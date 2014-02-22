@@ -1,9 +1,11 @@
 package fr.xebia.sophietk.memory.resource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import fr.xebia.sophietk.memory.service.CardPosition;
 import fr.xebia.sophietk.memory.service.Game;
 import fr.xebia.sophietk.memory.service.GameService;
+import fr.xebia.sophietk.memory.service.LogService;
 import fr.xebia.sophietk.memory.service.ScoreService;
 import fr.xebia.sophietk.memory.service.Turn;
 import fr.xebia.sophietk.memory.util.PositionConverter;
@@ -27,11 +29,13 @@ public class MemoryResource {
 
 	private ScoreService scoreService;
 	private GameService gameService;
+	private LogService logService;
 
 	@Inject
-	public MemoryResource(ScoreService scoreService, GameService gameService) {
+	public MemoryResource(ScoreService scoreService, GameService gameService, LogService logService) {
 		this.scoreService = scoreService;
 		this.gameService = gameService;
+		this.logService = logService;
 	}
 
 	@GET
@@ -42,7 +46,9 @@ public class MemoryResource {
 
 	@POST
 	public MemoryResponse play(List<List<Integer>> positions, @Context HttpServletRequest request) throws Exception {
-		final Game game = gameService.getCurrentGame();
+		String player = request.getRemoteAddr();
+		Game game = gameService.getCurrentGame();
+		logService.addLog(player, "Plays " + new ObjectMapper().writeValueAsString(positions));
 
 		if (game.getProgress() == 100) {
 			Response response = Response.status(Response.Status.BAD_REQUEST).entity("Cannot play because game is over").build();
@@ -58,8 +64,9 @@ public class MemoryResource {
 		}
 
 		Turn turn = game.play(cardPositions);
-		String player = request.getRemoteAddr();
-		int gameScore = scoreService.addTurnScore(player, game.getGameId(), turn.getTurnScore());
+		final int turnScore = turn.getTurnScore();
+		int gameScore = scoreService.addTurnScore(player, game.getGameId(), turnScore);
+		logService.addLog(player, String.format("%s %d (total: %d)", turnScore >= 0 ? "Wins" : "Loses", turnScore, gameScore));
 
 		return new MemoryResponse(game.getGameId(), game.getProgress(), turn, gameScore);
 	}
