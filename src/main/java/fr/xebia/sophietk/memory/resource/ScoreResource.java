@@ -3,11 +3,14 @@ package fr.xebia.sophietk.memory.resource;
 import com.google.inject.Inject;
 import fr.xebia.sophietk.memory.service.ScoreService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.Map;
 import java.util.Set;
@@ -51,5 +54,12 @@ public class ScoreResource {
 	@Path("/player")
 	public Set<String> getAllPlayers() {
 		return scoreService.getAllPlayers();
+	}
+
+	@POST
+	@Path("/register")
+	public String registerPlayer(String player, @Context HttpServletRequest request) {
+		scoreService.registerPlayer(request.getRemoteAddr(), player);
+		return "ok";
 	}
 }

@@ -15,8 +15,15 @@ public class ScoreService {
 	// TODO : replace with MultiKeyMap
 	private Map<String, Integer> scores;
 
+	private Map<String, String> players;
+
 	public ScoreService() {
 		reset();
+	}
+
+	public void reset() {
+		scores = Maps.newHashMap();
+		players = Maps.newHashMap();
 	}
 
 	public int addTurnScore(String player, int gameId, int turnScore) {
@@ -33,7 +40,7 @@ public class ScoreService {
 			int currentGameId = Integer.parseInt(key.split(KEY_SEPARATOR)[1]);
 			if (currentGameId == gameId) {
 				String player = key.split(KEY_SEPARATOR)[0];
-				gameScores.put(player, scores.get(key));
+				gameScores.put(getPlayerName(player), scores.get(key));
 			}
 		}
 
@@ -41,10 +48,12 @@ public class ScoreService {
 	}
 
 	public Map<Integer, Integer> getPlayerScores(String player) {
+		String playerIp = getPlayerIp(player);
+
 		Map<Integer, Integer> playerScores = Maps.newHashMap();
 		for (String key : scores.keySet()) {
 			String currentPlayer = key.split(KEY_SEPARATOR)[0];
-			if (player.equals(currentPlayer)) {
+			if (playerIp.equals(currentPlayer)) {
 				int gameId = Integer.parseInt(key.split(KEY_SEPARATOR)[1]);
 				playerScores.put(gameId, scores.get(key));
 			}
@@ -66,7 +75,7 @@ public class ScoreService {
 		Set<String> allPlayers = Sets.newHashSet();
 		for (String key : scores.keySet()) {
 			String currentPlayer = key.split(KEY_SEPARATOR)[0];
-			allPlayers.add(currentPlayer);
+			allPlayers.add(getPlayerName(currentPlayer));
 		}
 		return allPlayers;
 	}
@@ -76,13 +85,32 @@ public class ScoreService {
 		for (String key : scores.keySet()) {
 			String currentPlayer = key.split(KEY_SEPARATOR)[0];
 			int addedScore = totalScores.containsKey(currentPlayer) ? totalScores.get(currentPlayer) + scores.get(key) : scores.get(key);
-			totalScores.put(currentPlayer, addedScore);
+			totalScores.put(getPlayerName(currentPlayer), addedScore);
 		}
 
 		return totalScores;
 	}
 
-	public void reset() {
-		scores = Maps.newHashMap();
+	public void registerPlayer(String ip, String player) {
+		players.put(ip, player);
+	}
+
+	/**
+	 * @param ip String player ip
+	 * @return player name or ip
+	 */
+	private String getPlayerName(String ip) {
+		return players.containsKey(ip) ? players.get(ip) : ip;
+	}
+
+	/**
+	 * @param player String player name or ip
+	 * @return player ip
+	 */
+	private String getPlayerIp(String player) {
+		for (String playerIp : players.keySet()) {
+			if (players.get(playerIp).equals(player)) return playerIp;
+		}
+		return player;
 	}
 }

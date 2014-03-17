@@ -2,6 +2,7 @@ package fr.xebia.sophietk.memory.service;
 
 import org.junit.Test;
 
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -80,5 +81,29 @@ public class ScoreServiceTest {
 		assertEquals(2, players.size());
 		assertTrue(players.contains(AN_IP));
 		assertTrue(players.contains(ANOTHER_IP));
+	}
+
+	@Test
+	public void should_associate_ip_to_player_name() {
+		String playerName = "Player1";
+		ScoreService scoreService = new ScoreService();
+		scoreService.addTurnScore(AN_IP, 1, 10);
+		scoreService.registerPlayer(AN_IP, playerName);
+
+		Set<String> players = scoreService.getAllPlayers();
+		assertNotNull(players);
+		assertEquals(1, players.size());
+		assertTrue(players.contains(playerName));
+
+		Map<String,Integer> gameScores = scoreService.getGameScores(1);
+		assertEquals(1, gameScores.size());
+		assertTrue(gameScores.containsKey(playerName));
+
+		Map<String, Integer> totalScores = scoreService.getTotalScores();
+		assertEquals(1, totalScores.size());
+		assertTrue(totalScores.containsKey(playerName));
+
+		Map<Integer, Integer> playerScores = scoreService.getPlayerScores(playerName);
+		assertEquals(1, playerScores.size());
 	}
 }

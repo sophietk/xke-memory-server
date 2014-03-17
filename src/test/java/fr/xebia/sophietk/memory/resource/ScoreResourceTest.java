@@ -2,6 +2,7 @@ package fr.xebia.sophietk.memory.resource;
 
 import org.junit.Test;
 
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Map;
 
@@ -16,19 +17,19 @@ public class ScoreResourceTest extends ServerResourceTest {
 
 		assertEquals(0, gameScore.size());
 
-		play("[ [-1, 1], [0, 1] ]");
+		play("[ [-1, 1], [0, 1] ]"); // score += -1
 
 		gameScore = gameScore(1);
 
 		assertEquals(1, gameScore.size());
-		assertTrue(gameScore.containsValue(-1)); // score -1
+		assertTrue(gameScore.containsValue(-1));
 
-		play("[ [0, 1] ]");
+		play("[ [0, 1] ]"); // score += -1
 
 		gameScore = gameScore(1);
 
 		assertEquals(1, gameScore.size());
-		assertTrue(gameScore.containsValue(-2)); // score -2
+		assertTrue(gameScore.containsValue(-2));
 	}
 
 	@Test
@@ -37,7 +38,7 @@ public class ScoreResourceTest extends ServerResourceTest {
 
 		assertEquals(0, totalScores.size());
 
-		play("[ [-1, 1], [0, 1] ]");
+		play("[ [-1, 1], [0, 1] ]"); // score += -1
 
 		totalScores = totalScores();
 
@@ -51,7 +52,7 @@ public class ScoreResourceTest extends ServerResourceTest {
 		assertEquals(1, totalScores.size());
 		assertTrue(totalScores.containsValue(-1));
 
-		play("[ [-1, 1], [0, 1] ]");
+		play("[ [-1, 1], [0, 1] ]"); // score += -1
 
 		totalScores = totalScores();
 
@@ -65,7 +66,7 @@ public class ScoreResourceTest extends ServerResourceTest {
 
 		assertEquals(0, gamesList.size());
 
-		play("[ [-1, 1], [0, 1] ]");
+		play("[ [0, 1], [0, 1] ]");
 
 		gamesList = gamesList();
 
@@ -79,7 +80,7 @@ public class ScoreResourceTest extends ServerResourceTest {
 
 		assertEquals(0, playersList.size());
 
-		play("[ [-1, 1], [0, 1] ]");
+		play("[ [0, 1], [0, 1] ]");
 
 		playersList = playersList();
 
@@ -87,4 +88,17 @@ public class ScoreResourceTest extends ServerResourceTest {
 		assertTrue(playersList.get(0).matches(IP_PATTERN)); // my ip
 	}
 
+	@Test
+	public void should_be_able_to_change_player_name() {
+		play("[ [0, 1], [0, 1] ]");
+
+		String playerName = "Player1";
+		client.resource(TEST_APP_ROOT)
+				.path("scores/register")
+				.type(MediaType.APPLICATION_JSON)
+				.post(playerName);
+
+		List<String> playersList = playersList();
+		assertEquals(playerName, playersList.get(0));
+	}
 }
