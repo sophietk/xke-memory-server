@@ -98,4 +98,8 @@ public class AdminResourceTest extends ServerResourceTest {
 		assertEquals(1, currentGameForAdmin().getInt("gameId"));
 	}
 
+	@Test
+	public void should_temporize_game_turns() {
+		changeTempoForAdmin(500);
+	}
 }

@@ -35,7 +35,26 @@ public class MemoryResourceTest extends ServerResourceTest {
 	}
 
 	@Test(expected = UniformInterfaceException.class)
-	public void should_throw_http_error() {
+	public void should_throw_http_error_when_wrong_position() {
 		play("[ [0, 1], [2] ]");
+	}
+
+	@Test(expected = UniformInterfaceException.class)
+	public void should_throw_error_when_playing_too_fast() {
+		play("[ [0, 1], [0, 1] ]");
+
+		changeTempoForAdmin(500);
+
+		play("[ [0, 1], [0, 1] ]");
+	}
+
+	@Test
+	public void should_be_able_to_play_after_tempo() throws InterruptedException {
+		int tempo = 500;
+		changeTempoForAdmin(tempo);
+
+		play("[ [0, 1], [0, 1] ]");
+		Thread.sleep(tempo);
+		play("[ [0, 1], [0, 1] ]");
 	}
 }

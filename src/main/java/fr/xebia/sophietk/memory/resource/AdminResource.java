@@ -65,4 +65,10 @@ public class AdminResource {
 		logService.reset();
 		scoreService.reset();
 	}
+
+	@POST
+	@Path("/tempo")
+	public void temporize(int duration) {
+		gameService.temporize(duration);
+	}
 }

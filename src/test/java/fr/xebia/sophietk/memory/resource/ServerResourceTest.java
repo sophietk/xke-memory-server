@@ -91,4 +91,12 @@ public abstract class ServerResourceTest {
 				.get(new GenericType<HashMap<String, Integer>>() {
 				});
 	}
+
+	protected void changeTempoForAdmin(int tempo) {
+		client.resource(TEST_APP_ROOT)
+				.path("admin/tempo")
+				.header("adminpass", App.HEADER_ADMIN_PASS)
+				.type(MediaType.APPLICATION_JSON)
+				.post(tempo);
+	}
 }

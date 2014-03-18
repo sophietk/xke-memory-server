@@ -55,6 +55,11 @@ public class MemoryResource {
 			throw new WebApplicationException(response);
 		}
 
+		if(!gameService.canPlay(player)) {
+			Response response = Response.status(Response.Status.BAD_REQUEST).entity("You play too fast").build();
+			throw new WebApplicationException(response);
+		}
+
 		List<CardPosition> cardPositions;
 		try {
 			cardPositions = PositionConverter.toCardPosition(positions);
