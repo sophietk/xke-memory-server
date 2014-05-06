@@ -25,23 +25,21 @@ import java.util.EnumSet;
 
 public class App {
 
-	public static final int PORT = 3000;
+	public static final int DEFAULT_PORT = 3000;
+	public static int port = DEFAULT_PORT;
 	public static final String HEADER_ADMIN_PASS = "adminpass";
 	private static String adminPass = HEADER_ADMIN_PASS;
 
 	public static void main(String[] args) throws Exception {
-		Server server = startServer(PORT);
 		try {
 			adminPass = args[0];
 		} catch (ArrayIndexOutOfBoundsException ignored) {
 		}
-
 		try {
-			System.out.println("Press any key to stop the service...");
-			System.in.read();
-		} finally {
-			server.stop();
+			port = Integer.valueOf(args[1]);
+		} catch (ArrayIndexOutOfBoundsException ignored) {
 		}
+		startServer(port);
 	}
 
 	public static Server startServer(int port) throws Exception {
