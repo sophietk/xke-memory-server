@@ -49,6 +49,33 @@ Response:
 
 ### scores
 
+#### register player
+
+Request:
+```
+URL: /scores/register
+Method: POST
+Content-Type: application/json
+Body: myemail@mail.com              // player identifier
+```
+
+#### total scores
+
+Request:
+```
+URL: /scores
+Method: GET
+Content-Type: application/json
+```
+
+Response:
+```
+{
+  "192.168.0.18": 104,                // each player total scores
+  "192.168.0.47": 28
+}
+```
+
 #### same game scores
 
 Request:
