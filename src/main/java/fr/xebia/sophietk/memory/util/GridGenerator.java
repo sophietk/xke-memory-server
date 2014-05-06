@@ -27,7 +27,7 @@ public class GridGenerator {
 	public static Card[][] generate(int gridSize) {
 		if (gridSize * gridSize % 2 != 0)
 			throw new RuntimeException("The grid size should enable the grid to contain an even number of cards");
-		if (gridSize * gridSize % 2 > CARDS_SYMBOLS.size() * CARDS_COLORS.size())
+		if (gridSize * gridSize / 2 > CARDS_SYMBOLS.size() * CARDS_COLORS.size())
 			throw new RuntimeException("The grid cannot contain more than possible cards number");
 
 		List<Card> randomCards = allCards().subList(0, gridSize * gridSize / 2);
