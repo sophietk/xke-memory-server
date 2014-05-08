@@ -81,3 +81,18 @@ Response:
   "1": 7                            // player scores for each round
 }
 ```
+
+#### register your email
+
+Request:
+```
+URL: /scores/register
+Method: POST
+Content-Type: application/json
+Body: your_email@hostname
+```
+
+Response:
+```
+ok
+```
