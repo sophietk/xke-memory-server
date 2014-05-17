@@ -15,7 +15,7 @@ import java.util.Map;
 
 public abstract class ServerResourceTest {
 
-	protected static final int TEST_PORT = 3001;
+	protected static final int TEST_PORT = 4000;
 	protected static final String TEST_APP_ROOT = "http://0.0.0.0:" + TEST_PORT;
 	protected static final String IP_PATTERN = "\\b(?:\\d{1,3}\\.){3}\\d{1,3}\\b";
 
@@ -42,7 +42,7 @@ public abstract class ServerResourceTest {
 	protected void newGameForAdmin(int gridSize) {
 		client.resource(TEST_APP_ROOT)
 				.path("admin/new")
-				.header("adminpass", App.HEADER_ADMIN_PASS)
+				.header(App.HEADER_ADMIN_PASS, App.DEFAULT_ADMIN_PASS)
 				.type(MediaType.APPLICATION_JSON)
 				.post(gridSize);
 	}
@@ -50,7 +50,7 @@ public abstract class ServerResourceTest {
 	protected JSONObject currentGameForAdmin() {
 		String gameString = client.resource(TEST_APP_ROOT)
 				.path("admin/game")
-				.header("adminpass", App.HEADER_ADMIN_PASS)
+				.header(App.HEADER_ADMIN_PASS, App.DEFAULT_ADMIN_PASS)
 				.get(String.class);
 		return new JSONObject(gameString);
 	}
@@ -58,7 +58,7 @@ public abstract class ServerResourceTest {
 	protected List<Map<String, Object>> logsForAdmin() {
 		return client.resource(TEST_APP_ROOT)
 				.path("admin/logs")
-				.header("adminpass", App.HEADER_ADMIN_PASS)
+				.header(App.HEADER_ADMIN_PASS, App.DEFAULT_ADMIN_PASS)
 				.type(MediaType.APPLICATION_JSON)
 				.get(new GenericType<List<Map<String, Object>>>() {
 				});
@@ -95,7 +95,7 @@ public abstract class ServerResourceTest {
 	protected void changeTempoForAdmin(int tempo) {
 		client.resource(TEST_APP_ROOT)
 				.path("admin/tempo")
-				.header("adminpass", App.HEADER_ADMIN_PASS)
+				.header(App.HEADER_ADMIN_PASS, App.DEFAULT_ADMIN_PASS)
 				.type(MediaType.APPLICATION_JSON)
 				.post(tempo);
 	}

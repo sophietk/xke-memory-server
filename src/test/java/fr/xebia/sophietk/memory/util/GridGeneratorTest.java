@@ -58,6 +58,6 @@ public class GridGeneratorTest {
 
 	@Test(expected = RuntimeException.class)
 	public void should_throw_error_when_grid_cannot_be_built_with_too_high_cards_number() {
-		GridGenerator.generate(8);
+		GridGenerator.generate(18);
 	}
 }

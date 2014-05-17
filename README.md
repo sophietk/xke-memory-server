@@ -3,7 +3,7 @@ xke-memory-server [![Build Status](https://drone.io/github.com/sophietk/xke-memo
 
 A REST server to play memory game
 
-### game rules
+### Game rules
 
 Each turn, choose two cards to flip. If the two cards match, they are marked and should not be replayed. The game is finished when all pairs of cards are found.
 
@@ -12,7 +12,7 @@ Each turn, choose two cards to flip. If the two cards match, they are marked and
 - flip an already found card -> -3 pts
 - find two identical cards -> + 10 pts
 
-### play
+### Play
 
 Request:
 ```
@@ -47,9 +47,9 @@ Response:
 }
 ```
 
-### scores
+### Scores
 
-#### register player
+#### Register player
 
 Request:
 ```
@@ -59,7 +59,12 @@ Content-Type: application/json
 Body: myemail@mail.com              // player identifier
 ```
 
-#### total scores
+Response:
+```
+ok
+```
+
+#### Total scores
 
 Request:
 ```
@@ -71,16 +76,16 @@ Content-Type: application/json
 Response:
 ```
 {
-  "192.168.0.18": 104,                // each player total scores
+  "192.168.0.18": 104,              // each player total scores
   "192.168.0.47": 28
 }
 ```
 
-#### same game scores
+#### Same game scores
 
 Request:
 ```
-URL: /scores/game/1
+URL: /scores/game/1                 // game id
 Method: GET
 Content-Type: application/json
 ```
@@ -89,15 +94,16 @@ Response:
 ```
 {
   "192.168.0.18": 7,                // each player scores in this game
-  "192.168.0.47": 10
+  "192.168.0.47": 10,
+  "player@mail.com": 3
 }
 ```
 
-#### same player scores
+#### Same player scores
 
 Request:
 ```
-URL: /scores/player/192.168.0.18
+URL: /scores/player/192.168.0.18    // player identifier (ip if not registered)
 Method: GET
 Content-Type: application/json
 ```
@@ -109,17 +115,77 @@ Response:
 }
 ```
 
-#### register your email
+---
+
+### Server admin
+
+Package and launch server:
+```bash
+git clone git@github.com:sophietk/xke-memory-server.git
+cd xke-memory-server
+mvn clean package
+java -jar target/xke-memory-server-1.0-SNAPSHOT-shaded.jar
+```
+
+You can start a server with specific admin password and port:
+```bash
+java -jar target/xke-memory-server-1.0-SNAPSHOT-shaded.jar adminpass 3000
+```
+
+You can start and stop several servers with scripts, listening to different ports (edit to change admin passwords):
+```bash
+./scripts/run-servers.sh 4
+./scripts/stop-servers.sh
+```
+
+#### Current game
 
 Request:
 ```
-URL: /scores/register
-Method: POST
+URL: /admin/game
+Method: GET
+X-Adminpass: adminpass                // set X-Adminpass header with your admin password
 Content-Type: application/json
-Body: your_email@hostname
 ```
 
-Response:
+#### New game
+
+Request:
 ```
-ok
+URL: /admin/new
+Method: POST
+X-Adminpass: adminpass
+Content-Type: application/json
+Body: 4                             // game size (4x4)
+```
+
+#### Get logs
+
+Request:
+```
+URL: /admin/logs
+Method: GET
+X-Adminpass: adminpass
+Content-Type: application/json
+```
+
+#### Reset server
+
+Request:
+```
+URL: /admin/reset
+Method: POST
+X-Adminpass: adminpass
+Content-Type: application/json
+```
+
+#### Set players turns delay
+
+Request:
+```
+URL: /admin/tempo
+Method: POST
+X-Adminpass: adminpass
+Content-Type: application/json
+Body: 1000                          // turn delay (milliseconds)
 ```

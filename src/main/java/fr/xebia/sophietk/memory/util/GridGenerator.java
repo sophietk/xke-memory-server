@@ -10,7 +10,7 @@ import java.util.List;
 
 public class GridGenerator {
 
-	private static final List<String> CARDS_SYMBOLS = Arrays.asList("balloon", "dog", "coat", "boat", "umbrella");
+	private static final List<String> CARDS_SYMBOLS = Arrays.asList("balloon", "dog", "coat", "boat", "umbrella", "sheep", "ship", "bicycle");
 	private static final List<String> CARDS_COLORS = Arrays.asList("red", "blue", "yellow", "green");
 
 	private static List<Card> allCards() {

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AppTest {
 
-	private static final int TEST_PORT = 3001;
+	private static final int TEST_PORT = 4000;
 	private static final String TEST_APP_ROOT = "http://0.0.0.0:" + TEST_PORT;
 
 	@Test

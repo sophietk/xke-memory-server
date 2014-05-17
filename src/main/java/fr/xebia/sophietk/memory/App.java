@@ -27,8 +27,9 @@ public class App {
 
 	public static final int DEFAULT_PORT = 3000;
 	public static int port = DEFAULT_PORT;
-	public static final String HEADER_ADMIN_PASS = "adminpass";
-	private static String adminPass = HEADER_ADMIN_PASS;
+	public static final String HEADER_ADMIN_PASS = "X-Adminpass";
+	public static final String DEFAULT_ADMIN_PASS = "adminpass";
+	private static String adminPass = DEFAULT_ADMIN_PASS;
 
 	public static void main(String[] args) throws Exception {
 		try {

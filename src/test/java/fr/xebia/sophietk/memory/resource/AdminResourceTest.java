@@ -90,7 +90,7 @@ public class AdminResourceTest extends ServerResourceTest {
 
 		client.resource(TEST_APP_ROOT)
 				.path("admin/reset")
-				.header("adminpass", App.HEADER_ADMIN_PASS)
+				.header(App.HEADER_ADMIN_PASS, App.DEFAULT_ADMIN_PASS)
 				.post();
 
 		assertTrue(logsForAdmin().isEmpty());
