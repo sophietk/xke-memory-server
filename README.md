@@ -189,3 +189,5 @@ X-Adminpass: adminpass
 Content-Type: application/json
 Body: 1000                          // turn delay (milliseconds)
 ```
+
+See also [xke-memory-monitoring](//github.com/sophietk/xke-memory-monitoring)
